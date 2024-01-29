@@ -126,7 +126,7 @@ def process_folder(path_folder_original, path_folder_processed, occurrence=1, ba
             exist_matching_pattern_    = has_matching_pattern(first_page_1_4_text_file_i, REGULAR_EXPRESION)
             resolution_name            = get_name_resolution_file_ocurrence(first_page_1_4_text_file_i, REGULAR_EXPRESION, occurrence)
             if (exist_matching_pattern_):
-                special_characters     = contains_special_characters(resolution_name)
+                special_characters = contains_special_characters(resolution_name)
             else:
                 special_characters = False
 
@@ -205,20 +205,20 @@ def process_folder(path_folder_original, path_folder_processed, occurrence=1, ba
     print("time_running: ", time_final - time_init)
     return file_name_mapping
 
-name_original_folder_ocr = "original_ocr_documents_246_prueba"
+name_original_folder_ocr = "orig_with_ocr"
 path_original_folder_ocr = os.path.join(os.getcwd(), name_original_folder_ocr)
 
-name_processed_folder_ocr = "processed_documents_ocr_246_prueba"
+name_processed_folder_ocr = "Rename_ocr"
 path_processed_folder_ocr = os.path.join(os.getcwd(), name_processed_folder_ocr)
 
-name_original_files_ocr = "renamed_original_documents_ocr_246_prueba"
+name_original_files_ocr = "Rename"
 path_original_files_ocr = os.path.join(os.getcwd(), name_original_files_ocr)
 
-original_folder_files = "original_documents_ocr"
+original_folder_files = "orig"
 path_original_folder_files = os.path.join(os.getcwd(), original_folder_files)
 
-file_name_mapping = process_folder(path_original_folder_ocr, path_processed_folder_ocr, 0, 500)
+file_name_mapping = process_folder(path_original_folder_ocr, path_processed_folder_ocr, 1, 500)
 print("file_name_mapping: ", file_name_mapping)
 rename_original_files(path_original_folder_files, path_original_files_ocr, file_name_mapping)
 
-time.sleep(100000)
+#time.sleep(100000)
