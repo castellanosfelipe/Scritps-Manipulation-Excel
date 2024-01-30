@@ -61,8 +61,9 @@ def contains_special_characters(text):
 
 def rename_original_files(path_folder_original, path_directory_rename_files, file_name_mapping):
     list_files_original = list_files_recursively(path_folder_original)
+    keys_file_name_mapping = [os.path.basename(key_i) for key_i in file_name_mapping.keys()]
     for file_i in list_files_original:
-        if file_i in file_name_mapping:
+        if os.path.basename(file_i) in keys_file_name_mapping:
             name_of_path = file_i.split(path_folder_original)[-1]
             sub_path  = name_of_path.split(os.path.basename(file_i))[0]
             path = path_directory_rename_files + sub_path
@@ -82,7 +83,7 @@ REGULAR_EXPRESION = r'[Rr][Ee][Ss][Oo][Ll][Uu][Cc][Ii][ÓóA-zÀ-ú]+'
 # ======================== main functions ======================================
 # ==============================================================================
 
-def process_folder(path_folder_original, path_folder_processed, occurrence=1, batch_size=50):
+def process_folder(path_folder_original, path_folder_processed, path_original_folder_files, occurrence=1, batch_size=50):
 
     print(80 * "*")
     print("PROCESS FOLDER INIT")
@@ -154,11 +155,13 @@ def process_folder(path_folder_original, path_folder_processed, occurrence=1, ba
                     path_file_repeted = os.path.join(path, name_file)
                     os.makedirs(os.path.dirname(path_file_repeted), exist_ok=True)
                     shutil.copy2(file_i, path_file_repeted)
-                    file_name_mapping[file_i] = path_file_repeted
+                    name_of_path = file_i.split(path_folder_original)[-1]
+                    file_name_mapping[path_original_folder_files+name_of_path] = path_file_repeted
                 else:
                     os.makedirs(os.path.dirname(final_name_processed), exist_ok=True)
                     shutil.copy2(file_i,final_name_processed)
-                    file_name_mapping[file_i] = final_name_processed
+                    name_of_path = file_i.split(path_folder_original)[-1]
+                    file_name_mapping[path_original_folder_files+name_of_path] = final_name_processed
                 num_files_renames += 1
             else: # if not exist matching pattern
 
@@ -181,11 +184,13 @@ def process_folder(path_folder_original, path_folder_processed, occurrence=1, ba
                     path_file_repeted = os.path.join(path, name_file)
                     os.makedirs(os.path.dirname(path_file_repeted), exist_ok=True)
                     shutil.copy2(file_i, path_file_repeted)
-                    file_name_mapping[file_i] = path_file_repeted
+                    name_of_path = file_i.split(path_folder_original)[-1]
+                    file_name_mapping[path_original_folder_files+name_of_path] = path_file_repeted
                 else:
                     os.makedirs(os.path.dirname(final_name_processed), exist_ok=True)
                     shutil.copy2(file_i, final_name_processed)
-                    file_name_mapping[file_i] = final_name_processed
+                    name_of_path = file_i.split(path_folder_original)[-1]
+                    file_name_mapping[path_original_folder_files+name_of_path] = final_name_processed
                 num_files_fail += 1
 
         print("number of files renamed: ", num_files_renames)
@@ -217,8 +222,8 @@ path_original_files_ocr = os.path.join(os.getcwd(), name_original_files_ocr)
 original_folder_files = "orig"
 path_original_folder_files = os.path.join(os.getcwd(), original_folder_files)
 
-file_name_mapping = process_folder(path_original_folder_ocr, path_processed_folder_ocr, 1, 500)
-print("file_name_mapping: ", file_name_mapping)
+file_name_mapping = process_folder(path_original_folder_ocr, path_processed_folder_ocr, path_original_folder_files, 1, 500)
+#print("file_name_mapping: ", file_name_mapping)
 rename_original_files(path_original_folder_files, path_original_files_ocr, file_name_mapping)
 
 #time.sleep(100000)
